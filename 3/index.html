@@ -23,17 +23,21 @@
 	</header>
 
 	<figure class="card">
-		<img src="preview.webp" width="1080" height="1920" alt="Ваш результат">
+		<img src="preview.webp" width="1080" height="1529" alt="Ваш результат">
 	</figure>
 
 	<div class="actions">
-		<a class="btn btn-primary" href="career-3.png" download="career-3.png">
+		<a class="btn btn-primary" href="career-3.pdf" download="career-3.pdf">
 			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
-			Скачать
+			Скачать PDF
+		</a>
+		<a class="btn btn-secondary" href="career-3.pdf" target="_blank" rel="noopener" >
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6m0-6L10 14M18 14v6H4V6h6"/></svg>
+			Открыть
 		</a>
 		<button class="btn btn-secondary" id="share" type="button" hidden>
 			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7 8m5-5 5 5M5 12v8h14v-8"/></svg>
-			Поделиться / в Фото
+			Поделиться
 		</button>
 	</div>
 	<p class="hint" id="hint-ios" hidden>На iPhone: «Поделиться» → «Сохранить изображение» — картинка попадёт в Фото.</p>
@@ -42,17 +46,18 @@
 
 <script>
 (function () {
-	var file = 'career-3.png', type = 'image/png';
+	var file = 'career-3.pdf', type = 'application/pdf';
 	var ios = /iP(hone|ad|od)/.test(navigator.userAgent) ||
 		(navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 	var share = document.getElementById('share');
-	document.getElementById('hint').hidden = false;
+	var pdf = type === 'application/pdf';
+	if (!pdf) document.getElementById('hint').hidden = false;   // подсказки — только для картинок
 
 	if (navigator.canShare && window.File) {
 		try {
 			if (navigator.canShare({ files: [new File([''], file, { type: type })] })) {
 				share.hidden = false;
-				if (ios) document.getElementById('hint-ios').hidden = false;
+				if (ios && !pdf) document.getElementById('hint-ios').hidden = false;
 			}
 		} catch (e) {}
 	}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#061532">
+<meta name="robots" content="noindex, nofollow">
+<title>Карьера на Дальнем</title>
+<meta property="og:title" content="Карьера на Дальнем">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://egrinore.github.io/9/">
+<meta property="og:image" content="https://egrinore.github.io/9/preview.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<main class="page">
+	<header class="brand">
+		<span class="brand-top">Карьера</span>
+		<span class="brand-bottom">на Дальнем</span>
+	</header>
+
+	<figure class="card">
+		<img src="preview.webp" width="1080" height="1529" alt="Ваш результат">
+	</figure>
+
+	<div class="actions">
+		<a class="btn btn-primary" href="career-9.pdf" download="career-9.pdf">
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
+			Скачать PDF
+		</a>
+		<a class="btn btn-secondary" href="career-9.pdf" target="_blank" rel="noopener" >
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6m0-6L10 14M18 14v6H4V6h6"/></svg>
+			Открыть
+		</a>
+		<button class="btn btn-secondary" id="share" type="button" hidden>
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7 8m5-5 5 5M5 12v8h14v-8"/></svg>
+			Поделиться
+		</button>
+	</div>
+	<p class="hint" id="hint-ios" hidden>На iPhone: «Поделиться» → «Сохранить изображение» — картинка попадёт в Фото.</p>
+	<p class="hint" id="hint" hidden>Или нажмите на картинку и удерживайте, чтобы сохранить.</p>
+</main>
+
+<script>
+(function () {
+	var file = 'career-9.pdf', type = 'application/pdf';
+	var ios = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+		(navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+	var share = document.getElementById('share');
+	var pdf = type === 'application/pdf';
+	if (!pdf) document.getElementById('hint').hidden = false;   // подсказки — только для картинок
+
+	if (navigator.canShare && window.File) {
+		try {
+			if (navigator.canShare({ files: [new File([''], file, { type: type })] })) {
+				share.hidden = false;
+				if (ios && !pdf) document.getElementById('hint-ios').hidden = false;
+			}
+		} catch (e) {}
+	}
+	share.addEventListener('click', function () {
+		fetch(file).then(function (r) { return r.blob(); }).then(function (blob) {
+			return navigator.share({ files: [new File([blob], file, { type: type })] });
+		}).catch(function () {});
+	});
+})();
+</script>
+</body>
+</html>

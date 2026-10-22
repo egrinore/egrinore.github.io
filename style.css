@@ -1,12 +1,34 @@
+/* Сайт скачивания по QR — в стилистике стенда: фон вертикального ТВ (assets/image/bg/bg_tv_left.png →
+   bg.webp), кнопки — плашка вариантов планшета (web/tablet/img/figma/btn_option*.png → btn*.webp).
+   Шрифты — как на планшете: Inter (текст), Manrope (кнопки), OFL; заголовок — Russo One (Google Fonts).
+   Artifakt Element планшета на публичный сайт не выкладывается (шрифт Autodesk). */
+
+@font-face {
+	font-family: "Inter"; font-weight: 400; font-display: swap; src: url("fonts/inter-cyrillic-400-normal.woff2") format("woff2");
+	unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+	font-family: "Inter"; font-weight: 400; font-display: swap; src: url("fonts/inter-latin-400-normal.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+	font-family: "Manrope"; font-weight: 600; font-display: swap; src: url("fonts/manrope-cyrillic-600-normal.woff2") format("woff2");
+	unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+	font-family: "Manrope"; font-weight: 600; font-display: swap; src: url("fonts/manrope-latin-600-normal.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
-	--bg-1: #061532;
-	--bg-2: #0b2c6b;
-	--cyan: #3fd7ff;
-	--cyan-soft: rgba(63, 215, 255, 0.35);
-	--yellow: #ffc21a;
-	--yellow-hi: #ffd85a;
-	--text: #eaf6ff;
-	--muted: #9fc3e0;
+	--bg: #04030f;
+	--green: #00ea60;
+	--blue: #3f9bff;
+	--blue-soft: rgba(63, 155, 255, 0.35);
+	--text: #ffffff;
+	--muted: #a9c4e6;
+	--btn-k: 0.485;                /* css px на px картинки плашки (без единиц): плашка 132 px → 64 px */
+	--btn-h: calc(132px * var(--btn-k));
 }
 
 * { box-sizing: border-box; }
@@ -14,120 +36,120 @@
 html, body { margin: 0; min-height: 100%; }
 
 body {
-	background:
-		radial-gradient(120% 60% at 50% 0%, rgba(63, 215, 255, 0.18), transparent 60%),
-		linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 55%);
-	background-attachment: fixed;
+	background: var(--bg) url("bg.webp") center top / cover no-repeat fixed;
 	color: var(--text);
-	font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	font: 16px/1.4 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 	-webkit-font-smoothing: antialiased;
-}
-
-/* сетка точек как на экранах стенда */
-body::before {
-	content: "";
-	position: fixed;
-	inset: 0;
-	pointer-events: none;
-	background-image: radial-gradient(rgba(63, 215, 255, 0.18) 1px, transparent 1.2px);
-	background-size: 22px 22px;
-	mask-image: linear-gradient(180deg, #000, transparent 70%);
-	-webkit-mask-image: linear-gradient(180deg, #000, transparent 70%);
 }
 
 .page {
 	position: relative;
 	max-width: 520px;
 	margin: 0 auto;
-	padding: max(20px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom));
+	padding: max(22px, env(safe-area-inset-top)) 20px max(28px, env(safe-area-inset-bottom));
 	display: flex;
 	flex-direction: column;
-	gap: 18px;
+	gap: 20px;
 }
 
+/* заголовок — как на заставке ТВ: белым крупно, «на Дальнем» — зелёным */
 .brand {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	font-family: "Russo One", system-ui, sans-serif;
-	text-transform: uppercase;
 	line-height: 1;
-	letter-spacing: 0.02em;
 }
 .brand-top {
-	font-size: clamp(30px, 9vw, 42px);
-	color: #fff;
-	text-shadow: 0 0 18px var(--cyan-soft);
+	font: clamp(30px, 9vw, 42px)/1 "Russo One", system-ui, sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+	color: var(--text);
 }
 .brand-bottom {
-	font-size: clamp(20px, 6vw, 28px);
-	color: var(--yellow);
-	font-style: italic;
-	margin-top: 4px;
+	font: 600 clamp(22px, 6.4vw, 30px)/1.1 "Manrope", system-ui, sans-serif;
+	color: var(--green);
+	margin-top: 6px;
 }
 
+/* превью — стеклянная плашка с голубым свечением, как карточки на ТВ */
 .card {
+	align-self: center;
+	max-width: 100%;
 	margin: 0;
 	padding: 8px;
 	border-radius: 22px;
-	background: rgba(6, 21, 50, 0.6);
-	border: 1.5px solid var(--cyan);
-	box-shadow: 0 0 24px var(--cyan-soft), inset 0 0 18px rgba(63, 215, 255, 0.12);
+	background: rgba(20, 40, 80, 0.35);
+	border: 1.5px solid rgba(120, 180, 255, 0.7);
+	box-shadow: 0 0 22px var(--blue-soft), inset 0 0 18px rgba(63, 155, 255, 0.12);
+	-webkit-backdrop-filter: blur(6px);
+	backdrop-filter: blur(6px);
 }
-.card { align-self: center; max-width: 100%; }
 .card img {
 	display: block;
 	width: auto;
 	max-width: 100%;
 	height: auto;
-	max-height: calc(100vh - 290px);                 /* кнопка «Скачать» видна без прокрутки */
-	max-height: calc(100svh - 290px);
+	max-height: calc(100vh - 300px);                 /* кнопка «Скачать» видна без прокрутки */
+	max-height: calc(100svh - 300px);
 	min-height: 260px;
 	object-fit: contain;
 	border-radius: 15px;
 	-webkit-touch-callout: default;
 }
 
-.actions { display: flex; flex-direction: column; gap: 12px; }
+.actions { display: flex; flex-direction: column; gap: 18px; padding: 0 6px; }
 
+/* кнопка = плашка вариантов планшета: картинка со свечением растягивается по ширине (border-image),
+   края по 104 px картинки — как есть. Картинка 647×217: плашка 567×132 со сдвигом 40, 43. */
 .btn {
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 10px;
-	min-height: 58px;
-	padding: 0 20px;
-	border-radius: 16px;
-	font: 20px/1 "Russo One", system-ui, sans-serif;
+	gap: 12px;
+	height: var(--btn-h);
+	padding: 0 28px;
+	color: var(--text);
+	font: 600 18px/1 "Manrope", system-ui, sans-serif;
+	letter-spacing: 0.04em;
 	text-transform: uppercase;
 	text-decoration: none;
+	background: none;
+	border: 0;
 	cursor: pointer;
 	-webkit-tap-highlight-color: transparent;
-	transition: transform 0.08s ease, box-shadow 0.2s ease;
+	transition: transform 0.12s ease;
+}
+.btn::before {
+	content: "";
+	position: absolute;
+	left: calc(-40px * var(--btn-k));
+	right: calc(-40px * var(--btn-k));
+	top: calc(-43px * var(--btn-k));
+	height: calc(217px * var(--btn-k));
+	border-style: solid;
+	border-width: 0 calc(104px * var(--btn-k));
+	border-image: url("btn.webp") 0 104 fill / 0 calc(104px * var(--btn-k)) stretch;
+	pointer-events: none;
+	z-index: -1;
 }
 .btn:active { transform: scale(0.98); }
 .btn svg {
 	width: 24px;
 	height: 24px;
+	flex: none;
 	fill: none;
 	stroke: currentColor;
 	stroke-width: 2.4;
 	stroke-linecap: round;
 	stroke-linejoin: round;
 }
+.actions, .btn { isolation: isolate; }
 
-.btn-primary {
-	color: #0a1a3a;
-	background: linear-gradient(180deg, var(--yellow-hi), var(--yellow));
-	border: 0;
-	box-shadow: 0 6px 22px rgba(255, 194, 26, 0.35);
-}
-.btn-secondary {
-	color: var(--cyan);
-	background: transparent;
-	border: 1.5px solid var(--cyan);
-	box-shadow: 0 0 14px var(--cyan-soft);
-}
+/* главная — выбранная плашка (зелёное свечение), иконка зелёная */
+.btn-primary::before { border-image-source: url("btn_on.webp"); }
+.btn-primary svg { color: var(--green); }
+.btn-secondary svg { color: var(--blue); }
 
 .btn[hidden], .hint[hidden] { display: none; }
 

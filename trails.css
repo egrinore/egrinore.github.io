@@ -1,0 +1,138 @@
+/* «Тропы Дальнего Востока» (DFE 2026, стенд с фонарями) — страницы скачивания буклета по QR (/7/, /8/).
+   В стилистике стенда: фон — карта игры (assets/video/BG.mov, приглушённая), заголовок — header.png игры
+   (trails-title.webp, прозрачный), плашки — матовое стекло, как подсказки на экране.
+   Шрифты — общие с сайтом (fonts/): Inter (текст), Manrope (кнопки). */
+
+@font-face {
+	font-family: "Inter"; font-weight: 400; font-display: swap; src: url("fonts/inter-cyrillic-400-normal.woff2") format("woff2");
+	unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+	font-family: "Inter"; font-weight: 400; font-display: swap; src: url("fonts/inter-latin-400-normal.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+	font-family: "Manrope"; font-weight: 600; font-display: swap; src: url("fonts/manrope-cyrillic-600-normal.woff2") format("woff2");
+	unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+	font-family: "Manrope"; font-weight: 600; font-display: swap; src: url("fonts/manrope-latin-600-normal.woff2") format("woff2");
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+	--bg: #0b1030;
+	--text: #ffffff;
+	--muted: #c9d3f2;
+	--cyan: #4fe3ff;
+	--glass: rgba(255, 255, 255, 0.14);
+	--glass-edge: rgba(255, 255, 255, 0.38);
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; }
+
+body {
+	background:
+		linear-gradient(180deg, rgba(11, 16, 48, 0.35) 0%, rgba(11, 16, 48, 0.75) 100%),
+		var(--bg) url("trails-bg.webp") center top / cover no-repeat fixed;
+	color: var(--text);
+	font: 16px/1.4 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+.page {
+	max-width: 520px;
+	margin: 0 auto;
+	padding: max(18px, env(safe-area-inset-top)) 20px max(28px, env(safe-area-inset-bottom));
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+/* заголовок игры — картинка с прозрачным фоном */
+.title {
+	display: block;
+	width: min(100%, 440px);
+	height: auto;
+	margin: 0 auto;
+	filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.35));
+}
+
+/* превью буклета — стеклянная плашка, низ уходит в прозрачность */
+.card {
+	margin: 0;
+	padding: 8px;
+	border-radius: 24px;
+	background: var(--glass);
+	border: 1px solid var(--glass-edge);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	-webkit-backdrop-filter: blur(14px);
+	backdrop-filter: blur(14px);
+}
+.card img {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-height: calc(100svh - 330px);
+	min-height: 240px;
+	object-fit: cover;
+	object-position: top;
+	border-radius: 17px;
+	-webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 100%);
+	mask-image: linear-gradient(180deg, #000 62%, transparent 100%);
+}
+
+.actions { display: flex; flex-direction: column; gap: 12px; }
+
+.btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	height: 58px;
+	padding: 0 24px;
+	border-radius: 29px;
+	color: var(--text);
+	font: 600 17px/1 "Manrope", system-ui, sans-serif;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	text-decoration: none;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+	transition: transform 0.12s ease;
+	background: var(--glass);
+	border: 1px solid var(--glass-edge);
+	-webkit-backdrop-filter: blur(14px);
+	backdrop-filter: blur(14px);
+}
+.btn:active { transform: scale(0.98); }
+.btn svg {
+	width: 22px;
+	height: 22px;
+	flex: none;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2.4;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+/* главная — голубая, как полоса загрузки кольца в игре */
+.btn-primary {
+	color: #0b1030;
+	background: linear-gradient(180deg, #8af0ff 0%, var(--cyan) 100%);
+	border-color: rgba(255, 255, 255, 0.7);
+	box-shadow: 0 0 24px rgba(79, 227, 255, 0.45);
+}
+.btn-secondary svg { color: var(--cyan); }
+
+.btn[hidden], .hint[hidden] { display: none; }
+
+.hint {
+	margin: 0;
+	text-align: center;
+	font-size: 14px;
+	color: var(--muted);
+}
